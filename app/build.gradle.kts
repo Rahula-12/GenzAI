@@ -5,7 +5,7 @@ plugins {
     id("kotlin-kapt")
     // ksp plugin
     id("com.google.devtools.ksp")
-
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -74,4 +74,11 @@ dependencies {
     val nav_version = "2.5.3" // Or your desired version
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
+    // hilt dependencies
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+
 }
