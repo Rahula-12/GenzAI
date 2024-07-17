@@ -35,8 +35,8 @@ class ChatFragment : Fragment() {
             }
         }
         viewModel.wholeChat.observe(viewLifecycleOwner) { it ->
-            adapter.data=it
-            Log.d("Size",adapter.data.size.toString())
+            adapter.submitList(it)
+           // Log.d("Size",adapter.data.size.toString())
         }
         return binding.root
     }

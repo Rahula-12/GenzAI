@@ -6,18 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.learning.mygenai.R
 import com.learning.mygenai.model.Chat
 
-class ChatAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatAdapter:ListAdapter<Chat,RecyclerView.ViewHolder>(ChatDiffCallBack()) {
 
-    var data:List<Chat> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+//    var data:List<Chat> = listOf()
+//        set(value) {
+//            field = value
+//            notifyDataSetChanged()
+//        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if(viewType==0) {
@@ -30,9 +31,9 @@ class ChatAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
+//    override fun getItemCount(): Int {
+//        return data.size
+//    }
 
     override fun getItemViewType(position: Int): Int {
         return position%2
@@ -40,10 +41,10 @@ class ChatAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(holder is QueryViewHolder) {
-            holder.userChat.text=data[position].chatMessage
+            holder.userChat.text=getItem(position).chatMessage
         }
         else {
-            (holder as ResponseViewHolder).botResponse.text=data[position].chatMessage
+            (holder as ResponseViewHolder).botResponse.text=getItem(position).chatMessage
         }
     }
 
@@ -72,6 +73,17 @@ class ChatAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 return ResponseViewHolder(view)
             }
         }
+    }
+
+}
+
+class ChatDiffCallBack():DiffUtil.ItemCallback<Chat>(){
+    override fun areItemsTheSame(oldItem: Chat, newItem: Chat): Boolean {
+        return oldItem.id==newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Chat, newItem: Chat): Boolean {
+        return oldItem==newItem
     }
 
 }
