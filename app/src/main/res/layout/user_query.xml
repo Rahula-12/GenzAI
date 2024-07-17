@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:padding="10dp"
+    android:scrollbars="horizontal|vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content">
 
@@ -23,8 +24,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/chat_background"
         android:backgroundTint="@color/light_grey"
-        android:gravity="center"
         android:padding="10dp"
+        android:textAlignment="gravity"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toEndOf="@+id/user_icon"
         app:layout_constraintTop_toTopOf="@id/user_icon"

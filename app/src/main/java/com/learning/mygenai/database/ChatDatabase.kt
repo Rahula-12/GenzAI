@@ -7,6 +7,6 @@ import androidx.room.RoomDatabase
 import com.learning.mygenai.model.Chat
 
 @Database(entities = [Chat::class], version = 1, exportSchema = false)
-abstract class ChatDatabase(private val context: Context):RoomDatabase() {
+abstract class ChatDatabase():RoomDatabase() {
    abstract fun getChatDao(): ChatDao
 }

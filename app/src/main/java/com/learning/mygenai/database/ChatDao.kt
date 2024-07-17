@@ -16,6 +16,6 @@ interface ChatDao {
     suspend fun deleteChats()
 
     @Query("Select * from Chat")
-    fun getAllChats():LiveData<Chat>
+    fun getAllChats():LiveData<List<Chat>>
 
 }
