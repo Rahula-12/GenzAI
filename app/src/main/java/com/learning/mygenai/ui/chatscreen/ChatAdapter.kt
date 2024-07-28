@@ -1,18 +1,24 @@
 package com.learning.mygenai.ui.chatscreen
 
+import android.graphics.Bitmap
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.graphics.drawable.toIcon
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.firebase.auth.FirebaseAuth
 import com.learning.mygenai.R
 import com.learning.mygenai.model.Chat
 
-class ChatAdapter:ListAdapter<Chat,RecyclerView.ViewHolder>(ChatDiffCallBack()) {
+class ChatAdapter(var waiting:Boolean):ListAdapter<Chat,RecyclerView.ViewHolder>(ChatDiffCallBack()) {
 
 //    var data:List<Chat> = listOf()
 //        set(value) {
@@ -41,16 +47,35 @@ class ChatAdapter:ListAdapter<Chat,RecyclerView.ViewHolder>(ChatDiffCallBack()) 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(holder is QueryViewHolder) {
+//            if(FirebaseAuth.getInstance().currentUser!=null && FirebaseAuth.getInstance().currentUser!!.photoUrl!=null)
+            val photoUrl=FirebaseAuth.getInstance().currentUser?.photoUrl
+            if(photoUrl!=null) {
+                Glide.with(holder.userIcon.context).load(photoUrl).transform(CircleCrop()).into(holder.userIcon)
+            }
+            else {
+                holder.userIcon.setImageResource(R.drawable.user_image)
+            }
+//            else
+//                Log.d("CurrUser",FirebaseAuth.getInstance().currentUser!!.photoUrl.toString())
             holder.userChat.text=getItem(position).chatMessage
         }
         else {
-            (holder as ResponseViewHolder).botResponse.text=getItem(position).chatMessage
+            if(waiting && position==itemCount-1 && getItem(position).chatMessage=="#") {
+                (holder as ResponseViewHolder).waiting.isVisible=true
+                Glide.with(holder.itemView.context).load(R.drawable.loading).into(holder.waiting)
+                holder.botResponse.isVisible=false
+            }
+            else {
+                (holder as ResponseViewHolder).waiting.isVisible=false
+                holder.botResponse.isVisible=true
+                holder.botResponse.text=getItem(position).chatMessage
+            }
         }
     }
 
     class QueryViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
-      //  private val userIcon: ImageView =view.findViewById(R.id.user_icon)
+         val userIcon: ImageView =view.findViewById(R.id.user_icon)
          val userChat: TextView =view.findViewById(R.id.user_chat)
 
         companion object {
@@ -65,7 +90,7 @@ class ChatAdapter:ListAdapter<Chat,RecyclerView.ViewHolder>(ChatDiffCallBack()) 
     class ResponseViewHolder(view: View): RecyclerView.ViewHolder(view) {
       //  private val botIcon: ImageView =view.findViewById(R.id.bot_icon)
          val botResponse: TextView =view.findViewById(R.id.ai_response)
-
+         val waiting:ImageView=view.findViewById(R.id.waiting)
         companion object {
             fun from(parent:ViewGroup): ResponseViewHolder {
                 val layoutInflater= LayoutInflater.from(parent.context)

@@ -2,12 +2,14 @@ package com.learning.mygenai.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.firebase.Timestamp
 import java.util.UUID
 
 @Entity
 data class Chat(
     @PrimaryKey
     val id:String=UUID.randomUUID().toString(),
-    val chatMessage:String,
-    val chatType:Int
+    var chatMessage:String,
+    val chatType:Int,
+    val timestamp: String=Timestamp.now().toString()
 )

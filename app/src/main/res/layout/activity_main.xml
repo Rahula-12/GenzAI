@@ -1,20 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:fillViewport="true">-->
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:fitsSystemWindows="true"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent">
-        <androidx.fragment.app.FragmentContainerView
-            android:layout_width="match_parent"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <data>
+
+        </data>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:fitsSystemWindows="true"
             android:layout_height="match_parent"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:id="@+id/fragmentContainerView"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/graph"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+            android:layout_width="match_parent">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/my_toolbar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/material_dynamic_tertiary99"
+                    android:elevation="4dp"
+                    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sign Out"
+                            android:id="@+id/logOut"
+                            android:drawableLeft="@drawable/baseline_logout_24"
+                            android:textStyle="bold"
+                            android:outlineAmbientShadowColor="@color/material_dynamic_tertiary95"
+                            android:outlineSpotShadowColor="@color/material_dynamic_tertiary95"
+                            android:layout_marginStart="0dp"
+                            android:foregroundTint="@color/material_dynamic_tertiary99"
+                            android:backgroundTint="@color/material_dynamic_tertiary99"
+                            android:background="@color/material_dynamic_tertiary99"
+                            android:layout_gravity="start"/>
+                        <TextView
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:text="@string/app_name" />
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:layout_width="wrap_content"
+                            android:text="Clear"
+                            android:textStyle="bold"
+                            android:outlineAmbientShadowColor="@color/material_dynamic_tertiary95"
+                            android:outlineSpotShadowColor="@color/material_dynamic_tertiary95"
+                            android:layout_marginEnd="10dp"
+                            android:foregroundTint="@color/material_dynamic_tertiary99"
+                            android:backgroundTint="@color/material_dynamic_tertiary99"
+                            android:background="@color/material_dynamic_tertiary99"
+                            android:id="@+id/clearButton"
+                            android:layout_gravity="end"
+                            android:layout_height="wrap_content" />
+
+                </androidx.appcompat.widget.Toolbar>
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:id="@+id/fragmentContainerView"
+                    app:defaultNavHost="true"
+                    app:layout_constraintTop_toBottomOf="@id/my_toolbar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:navGraph="@navigation/graph" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+<!--</ScrollView>-->

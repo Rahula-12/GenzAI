@@ -7,7 +7,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:src="@drawable/loading"
+        android:layout_width="100dp"
+        android:scaleType="fitCenter"
+        android:layout_height="100dp"
+        android:scrollHorizontally="true"
+        android:background="@drawable/chat_background"
+        android:backgroundTint="@color/light_grey"
+        android:padding="10dp"
+        android:id="@+id/waiting"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintEnd_toStartOf="@id/bot_icon"
+        app:layout_constraintTop_toTopOf="@id/ai_response"
+        app:layout_constraintBottom_toBottomOf="@id/ai_response"/>
+
     <TextView
+        android:visibility="gone"
         android:textAlignment="center"
         android:id="@+id/ai_response"
         android:layout_width="300dp"
