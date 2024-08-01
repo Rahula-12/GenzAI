@@ -1,4 +1,4 @@
-package com.learning.mygenai.ui.chatscreen
+package com.learning.mygenai.ui.chatscreen.normalquery
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,9 +11,7 @@ import com.learning.mygenai.model.Parts
 import com.learning.mygenai.model.Query
 import com.learning.mygenai.network.RequestRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel

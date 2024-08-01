@@ -93,6 +93,7 @@ dependencies {
 
     kapt("com.github.bumptech.glide:compiler:4.11.0")
 
+    implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
 
 
 }

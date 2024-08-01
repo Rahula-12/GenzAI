@@ -1,4 +1,4 @@
-package com.learning.mygenai.ui.chatscreen
+package com.learning.mygenai.ui.chatscreen.normalquery
 
 import android.content.Context
 import android.os.Bundle
@@ -24,13 +24,14 @@ class ChatFragment : Fragment() {
         // Inflate the layout for this fragment
         binding=FragmentChatBinding.inflate(inflater,container,false)
         //  viewModel= ViewModelProvider(this)[ChatViewModel::class.java]
-        val adapter=ChatAdapter(false)
+        val adapter= ChatAdapter(false)
         binding.chat.adapter = adapter
         viewModel.waiting.observe(viewLifecycleOwner) {
            adapter.waiting = it
         }
         viewModel.wholeChat.observe(viewLifecycleOwner) { chatList ->
             adapter.submitList(chatList)
+            if(chatList.isNotEmpty())
             binding.chat.smoothScrollToPosition(chatList.size-1)
             // Log.d("Size",adapter.data.size.toString())
         }

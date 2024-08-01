@@ -51,6 +51,7 @@ class UserAuthenticateActivity : AppCompatActivity() {
         if(mAuth.currentUser!=null) {
             val intent=Intent(this,ChatActivity::class.java)
             startActivity(intent)
+            finish()
         }
         setContentView(R.layout.activity_user_authenticate)
 //        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -102,6 +103,7 @@ class UserAuthenticateActivity : AppCompatActivity() {
                         binding.password.setText("")
                         val intent = Intent(this, ChatActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }.addOnFailureListener(this) {
                         Toast.makeText(
                             this,
@@ -239,6 +241,7 @@ class UserAuthenticateActivity : AppCompatActivity() {
                     )
                     Toast.makeText(this@UserAuthenticateActivity,"Logged In Successfully",Toast.LENGTH_SHORT).show()
                     startActivity(i)
+                    finish()
                 } else {
                     // if the code is not correct then we are
                     // displaying an error message to the user.

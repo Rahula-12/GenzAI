@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/photo_query"
+        android:textStyle="bold"
+        android:outlineAmbientShadowColor="@color/material_dynamic_tertiary95"
+        android:outlineSpotShadowColor="@color/material_dynamic_tertiary95"
+        android:foregroundTint="@color/material_dynamic_tertiary99"
+        android:backgroundTint="@color/material_dynamic_tertiary99"
+        android:background="@color/material_dynamic_tertiary99"
+        android:title="Photo Query"/>
+    <item
+        android:id="@+id/clear"
+        android:textStyle="bold"
+        android:outlineAmbientShadowColor="@color/material_dynamic_tertiary95"
+        android:outlineSpotShadowColor="@color/material_dynamic_tertiary95"
+        android:foregroundTint="@color/material_dynamic_tertiary99"
+        android:backgroundTint="@color/material_dynamic_tertiary99"
+        android:background="@color/material_dynamic_tertiary99"
+        android:title="Clear"/>
+</menu>

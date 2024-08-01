@@ -53,6 +53,7 @@
                             android:layout_width="wrap_content"
                             android:text="Clear"
                             android:textStyle="bold"
+                            android:visibility="gone"
                             android:outlineAmbientShadowColor="@color/material_dynamic_tertiary95"
                             android:outlineSpotShadowColor="@color/material_dynamic_tertiary95"
                             android:layout_marginEnd="10dp"
@@ -64,7 +65,6 @@
                             android:layout_height="wrap_content" />
 
                 </androidx.appcompat.widget.Toolbar>
-
                 <androidx.fragment.app.FragmentContainerView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
