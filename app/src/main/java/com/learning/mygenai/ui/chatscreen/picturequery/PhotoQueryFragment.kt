@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -32,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class PhotoQueryFragment : Fragment() {
 
     private lateinit var binding:FragmentPhotoQueryBinding
-    private lateinit var dialogImageView:ImageView
+    private lateinit var dialogImageView:ConstraintLayout
     private var currentImage:Bitmap?=null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,9 +51,9 @@ class PhotoQueryFragment : Fragment() {
             val dialog=Dialog(requireContext())
             dialog.setTitle("Photo Query")
             dialog.setContentView(R.layout.photo_query_dialog)
-            dialogImageView=dialog.findViewById(R.id.currentPhoto)
+            dialogImageView=dialog.findViewById(R.id.image_upload)
             dialogImageView.setOnClickListener{
-                val intent=Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                val intent=Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE)
                 startActivityForResult(intent,1888)
             }
             val submitButton=dialog.findViewById<Button>(R.id.askButton)
@@ -88,7 +89,8 @@ class PhotoQueryFragment : Fragment() {
         if(resultCode==-1 && requestCode==1888) {
             currentImage=data!!.extras!!["data"] as Bitmap
             if(::dialogImageView.isInitialized) {
-                Glide.with(requireContext()).asBitmap().load(currentImage).into(dialogImageView)
+                val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
+                Glide.with(currentPhoto).asBitmap().load(currentImage).into(currentPhoto)
                 dialogImageView.rotation= 90F
             }
         }

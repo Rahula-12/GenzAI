@@ -22,4 +22,6 @@
     <string name="google">Google</string>
     <string name="phone_number">Phone Number</string>
     <string name="sign_out">SIGN OUT</string>
+    <string name="click_to_upload_image">Click to upload image</string>
+    <string name="submit_txt">Submit</string>
 </resources>

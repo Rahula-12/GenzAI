@@ -10,8 +10,4 @@
         <item name="android:itemTextAppearance">@style/MyMenuItemTextAppearance</item>
         <item name="colorAccent">@color/black</item>
     </style>
-    <style name="MyMenuItemTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
-        <item name="android:textColor">@color/black</item>
-    </style>
-    <style name="Theme.MyGenAI" parent="Base.Theme.MyGenAI" />
 </resources>
