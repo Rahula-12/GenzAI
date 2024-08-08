@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.MyGenAI"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -18,7 +19,7 @@
         android:fitsSystemWindows="true"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".ui.userauthenticate.UserAuthenticateActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -26,7 +27,6 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/material_dynamic_tertiary99"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -40,16 +40,18 @@
                 android:text="@string/app_name" />
         </androidx.appcompat.widget.Toolbar>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/oval_background"
-            android:hint="Enter Email"
+            android:hint="@string/enter_email"
+            android:textColor="?attr/colorAccent"
             android:maxLines="1"
-            android:inputType="textAutoCorrect"
+            android:inputType="textEmailAddress"
+            android:textColorHint="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -64,11 +66,13 @@
             android:id="@+id/password"
             android:inputType="textPassword"
             android:background="@drawable/oval_background"
+            android:textColorHint="@color/dark_grey"
+            android:textColor="?attr/colorAccent"
             app:layout_constraintTop_toBottomOf="@id/email"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="20dp"
-            android:hint="Enter Password"
+            android:hint="@string/enter_password"
             android:maxLines="1"
             android:layout_marginEnd="20dp" />
 
@@ -85,16 +89,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Already registered?"
+                android:text="@string/already_registered"
+                android:textStyle="bold"
                 android:layout_marginEnd="5dp"
                 android:id="@+id/changeOption1" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign In"
-                android:onClick="@{()->viewmodel.switchSighUp()}"
+                android:text="@string/sign_in"
                 android:textColor="@color/light_blue"
+                android:textStyle="bold"
+                android:onClick="@{()->viewmodel.switchSighUp()}"
                 android:clickable="true"
                 android:id="@+id/changeOption2" />
 
@@ -106,10 +112,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/moveNext"
-            android:text="Sign Up"
+            android:text="@string/sign_up"
             android:layout_margin="10dp"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:textColor="?attr/colorAccent"
             app:layout_constraintTop_toBottomOf="@id/checkLoggedIn"
             app:layout_constraintStart_toStartOf="@id/password"
             app:layout_constraintEnd_toEndOf="@id/password" />
@@ -118,10 +126,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/moveNext"
-            android:text="Or\nLogin With"
+            android:text="@string/or_nlogin_with"
             android:id="@+id/loginOptions"
             android:textAlignment="center"
             android:padding="20dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -140,8 +149,9 @@
                 android:id="@+id/google_button"
                 android:drawableLeft="@drawable/google_icon"
                 android:drawablePadding="5dp"
-                android:backgroundTint="@color/white"
-                android:text="Google">
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="?attr/colorAccent"
+                android:text="@string/google">
             </androidx.appcompat.widget.AppCompatButton>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -149,9 +159,10 @@
                 android:id="@+id/phone_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="?attr/colorAccent"
                 android:drawableLeft="@drawable/baseline_call_24"
-                android:text="Phone Number"/>
+                android:text="@string/phone_number"/>
 
 
         </LinearLayout>

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="10dp"
+    android:theme="@style/Theme.MyGenAI"
     android:scrollbars="horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content">
@@ -24,14 +25,15 @@
 
     <TextView
         android:visibility="gone"
+        android:backgroundTint="?attr/colorPrimary"
+        android:textColor="?attr/colorAccent"
         android:scrollbars="horizontal"
         android:textAlignment="center"
         android:id="@+id/ai_response"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:scrollHorizontally="true"
         android:background="@drawable/chat_background"
-        android:backgroundTint="@color/light_grey"
         android:padding="10dp"
         android:layout_marginEnd="10dp"
         app:layout_constrainedWidth="true"
@@ -44,8 +46,8 @@
 
     <ImageView
         android:id="@+id/bot_icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"

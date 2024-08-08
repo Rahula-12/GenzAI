@@ -1,7 +1,11 @@
 package com.learning.mygenai.ui.chatscreen.normalquery
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,11 +40,15 @@ class ChatFragment : Fragment() {
             // Log.d("Size",adapter.data.size.toString())
         }
         binding.askButton.setOnClickListener {
-            if (binding.prompt.text.toString() == "") Toast.makeText(
+            if (binding.prompt.text.toString() == "") {
+                Toast.makeText(
                 activity,
                 "Please ask some question",
                 Toast.LENGTH_SHORT
-            ).show()
+                ).show()
+//                val intent= Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                startActivityForResult(intent,1888)
+            }
             else {
                 val imm =
                     requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -51,4 +59,13 @@ class ChatFragment : Fragment() {
         }
         return binding.root
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+////        Log.d("PhotoUri",photoUri.toString())
+//        if(requestCode==1888 && resultCode==RESULT_OK) {
+//            val photoUri=data?.extras?.get("data")
+//            Log.d("PhotoUri",photoUri.toString())
+//        }
+//    }
+
 }

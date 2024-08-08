@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.learning.mygenai.database.ChatDao
 import com.learning.mygenai.database.ChatDatabase
+import com.learning.mygenai.database.PhotoDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,5 +27,15 @@ class DatabaseModule {
     fun providesChatDao(chatDatabase: ChatDatabase) :ChatDao {
         return chatDatabase.getChatDao()
     }
+
+    @Singleton
+    @Provides
+    fun providesPhotoChatDatabase(@ApplicationContext context: Context):PhotoDatabase {
+        return Room.databaseBuilder(context,PhotoDatabase::class.java,"photo_query_db").fallbackToDestructiveMigration().build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesPhotoQueryDao(photoDatabase: PhotoDatabase) = photoDatabase.getPhotoQueryDao()
 
 }

@@ -3,4 +3,23 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="client_id">197666562066-254f4632hvo5eg5r8ing5he9f02naeu5.apps.googleusercontent.com</string>
+    <string name="photo_query">Photo Query</string>
+    <string name="normal_query">Normal Query</string>
+    <string name="clear">Clear</string>
+    <string name="ask_me_anything">Ask me anything</string>
+    <string name="phone_number_verification">Phone Number Verification</string>
+    <string name="enter_phone_number">Enter phone number</string>
+    <string name="verify">Verify</string>
+    <string name="enter_otp">Enter otp</string>
+    <string name="submit">Submit</string>
+    <string name="resend">Resend</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="already_registered">Already registered?</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="or_nlogin_with">Or\nLogin With</string>
+    <string name="google">Google</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="sign_out">SIGN OUT</string>
 </resources>

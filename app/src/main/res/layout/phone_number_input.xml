@@ -18,7 +18,7 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:paddingBottom="20dp"
-            android:text="Phone Number Verification" />
+            android:text="@string/phone_number_verification" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="0dp"
@@ -27,7 +27,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/oval_background"
-            android:hint="Enter phone number"
+            android:hint="@string/enter_phone_number"
             android:inputType="number"
             android:layout_marginTop="50dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@id/phoneNumber"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Verify" />
+            android:text="@string/verify" />
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="0dp"
@@ -51,7 +51,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/oval_background"
-            android:hint="Enter otp"
+            android:hint="@string/enter_otp"
             android:visibility="gone"
             android:inputType="number"
             android:layout_marginTop="50dp"
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Submit"
+            android:text="@string/submit"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.229"
@@ -80,7 +80,7 @@
             app:layout_constraintTop_toBottomOf="@id/otp"
             app:layout_constraintStart_toEndOf="@+id/submitButton"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="Resend" />
+            android:text="@string/resend" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

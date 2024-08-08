@@ -9,5 +9,21 @@
         android:id="@+id/chatFragment"
         android:name="com.learning.mygenai.ui.chatscreen.normalquery.ChatFragment"
         android:label="fragment_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" >
+        <action
+            android:id="@+id/action_chatFragment_to_photoQueryFragment"
+            app:destination="@id/photoQueryFragment"
+            app:popUpTo="@id/chatFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoQueryFragment"
+        android:name="com.learning.mygenai.ui.chatscreen.picturequery.PhotoQueryFragment"
+        android:label="PhotoQueryFragment" >
+        <action
+            android:id="@+id/action_photoQueryFragment_to_chatFragment"
+            app:destination="@id/chatFragment"
+            app:popUpTo="@id/photoQueryFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

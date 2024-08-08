@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:padding="10dp"
+    android:theme="@style/Theme.MyGenAI"
     android:scrollbars="horizontal|vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content">
@@ -22,10 +23,11 @@
 
     <TextView
         android:id="@+id/user_chat"
+        android:textColor="?attr/colorAccent"
+        android:backgroundTint="?attr/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/chat_background"
-        android:backgroundTint="@color/light_grey"
         android:padding="10dp"
         android:scrollHorizontally="true"
         android:scrollbars="horizontal"

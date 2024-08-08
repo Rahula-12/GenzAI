@@ -7,4 +7,7 @@
     <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
 </style>
+    <style name="menuItem" parent="Widget.AppCompat.TextView.SpinnerItem">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

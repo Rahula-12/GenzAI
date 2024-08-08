@@ -1,5 +1,6 @@
 package com.learning.mygenai.ui.chatscreen.normalquery
 
+import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -45,7 +46,6 @@ class ChatAdapter(var waiting:Boolean):ListAdapter<Chat,RecyclerView.ViewHolder>
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(holder is QueryViewHolder) {
-//            if(FirebaseAuth.getInstance().currentUser!=null && FirebaseAuth.getInstance().currentUser!!.photoUrl!=null)
             val photoUrl=FirebaseAuth.getInstance().currentUser?.photoUrl
             if(photoUrl!=null) {
                 Glide.with(holder.userIcon.context).load(photoUrl).transform(CircleCrop()).into(holder.userIcon)
@@ -58,6 +58,7 @@ class ChatAdapter(var waiting:Boolean):ListAdapter<Chat,RecyclerView.ViewHolder>
             holder.userChat.text=getItem(position).chatMessage
         }
         else {
+            Glide.with((holder as ResponseViewHolder).botIcon).load(R.drawable.chatbot).transform(CircleCrop()).into(holder.botIcon)
             if(waiting && position==itemCount-1 && getItem(position).chatMessage=="#") {
                 (holder as ResponseViewHolder).waiting.isVisible=true
                 Glide.with(holder.itemView.context).load(R.drawable.loading).into(holder.waiting)
@@ -89,6 +90,7 @@ class ChatAdapter(var waiting:Boolean):ListAdapter<Chat,RecyclerView.ViewHolder>
       //  private val botIcon: ImageView =view.findViewById(R.id.bot_icon)
          val botResponse: TextView =view.findViewById(R.id.ai_response)
          val waiting:ImageView=view.findViewById(R.id.waiting)
+        val botIcon:ImageView=view.findViewById(R.id.bot_icon)
         companion object {
             fun from(parent:ViewGroup): ResponseViewHolder {
                 val layoutInflater= LayoutInflater.from(parent.context)

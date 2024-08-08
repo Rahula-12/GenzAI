@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:fillViewport="true"
+    android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:scrollbars="vertical"
+    android:layout_height="700dp">
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
+        android:elevation="5dp"
+        android:background="@drawable/photo_outline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/baseline_add_24"
+        android:scaleType="fitXY"
+        android:id="@+id/currentPhoto"
+        android:layout_height="250dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/prompt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/oval_background"
+        android:elevation="4dp"
+        android:gravity="start"
+        android:hint="@string/ask_me_anything"
+        android:imeOptions="actionNext"
+        android:inputType="textMultiLine"
+        android:padding="15dp"
+        android:scrollbars="vertical"
+        android:scrollHorizontally="false"
+        android:singleLine="false"
+        android:layout_marginTop="15dp"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/currentPhoto"
+        app:layout_constraintVertical_bias="0.295" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/askButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Submit"
+        app:backgroundTint="@color/design_default_color_secondary_variant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/prompt" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

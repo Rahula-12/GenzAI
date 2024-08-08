@@ -3,7 +3,15 @@
     <style name="Base.Theme.MyGenAI" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/light_grey</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSurface">@color/dark_grey</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="android:itemTextAppearance">@style/MyMenuItemTextAppearance</item>
+        <item name="colorAccent">@color/black</item>
     </style>
-
+    <style name="MyMenuItemTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@color/black</item>
+    </style>
     <style name="Theme.MyGenAI" parent="Base.Theme.MyGenAI" />
 </resources>

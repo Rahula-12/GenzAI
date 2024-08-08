@@ -166,13 +166,13 @@ class UserAuthenticateActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
-            Toast.makeText(this@UserAuthenticateActivity,"Please wait while we are checking",Toast.LENGTH_SHORT).show()
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
                 account?.run {
                     firebaseAuthWithGoogle(idToken!!)
+                    Toast.makeText(this@UserAuthenticateActivity,"Please wait while we are checking",Toast.LENGTH_SHORT).show()
                 }
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
