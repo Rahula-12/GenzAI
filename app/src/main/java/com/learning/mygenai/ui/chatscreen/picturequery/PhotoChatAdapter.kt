@@ -6,13 +6,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.learning.mygenai.R
 import com.learning.mygenai.model.PhotoChat
@@ -26,12 +24,12 @@ class PhotoChatAdapter(var loading:Boolean):ListAdapter<PhotoChat,PhotoQueryView
 
     override fun onBindViewHolder(holder: PhotoQueryViewHolder, position: Int) {
         val item=getItem(position)
-        Glide.with(holder.photoView).load(item.photoUri.toUri()).into(holder.photoView)
+        Glide.with(holder.photoView).load(item.photoUri.toUri()).placeholder(R.drawable.loading).into(holder.photoView)
         Glide.with(holder.botIcon).load(R.drawable.chatbot).transform(CircleCrop()).into(holder.botIcon)
         holder.photoView.rotation=90F
         holder.userQuery.text=item.userQuery
         holder.aiResponse.text=item.response
-        if(loading) {
+        if(loading && position==itemCount-1) {
             Glide.with(holder.loadingImage).load(R.drawable.loading).into(holder.loadingImage)
             holder.loadingImage.visibility=View.VISIBLE
             holder.aiResponse.visibility=View.INVISIBLE

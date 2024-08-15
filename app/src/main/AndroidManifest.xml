@@ -29,6 +29,12 @@
             android:name=".ui.chatscreen.ChatActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+                <data android:mimeType="text/plain"/>
+                <data android:mimeType="image/*"/>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
     </application>
 

@@ -25,6 +25,7 @@ class ChatFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("ViewModel","Inside ChatFragment:$viewModel")
         // Inflate the layout for this fragment
         binding=FragmentChatBinding.inflate(inflater,container,false)
         //  viewModel= ViewModelProvider(this)[ChatViewModel::class.java]
@@ -39,6 +40,12 @@ class ChatFragment : Fragment() {
             binding.chat.smoothScrollToPosition(chatList.size-1)
             // Log.d("Size",adapter.data.size.toString())
         }
+        Log.d("ChatIntent",requireActivity().intent.type.toString())
+        requireActivity().intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
+            binding.prompt.setText(it)
+            requireActivity().intent.removeExtra(Intent.EXTRA_TEXT)
+        }
+
         binding.askButton.setOnClickListener {
             if (binding.prompt.text.toString() == "") {
                 Toast.makeText(
@@ -46,6 +53,9 @@ class ChatFragment : Fragment() {
                 "Please ask some question",
                 Toast.LENGTH_SHORT
                 ).show()
+                val imm =
+                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
 //                val intent= Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 //                startActivityForResult(intent,1888)
             }

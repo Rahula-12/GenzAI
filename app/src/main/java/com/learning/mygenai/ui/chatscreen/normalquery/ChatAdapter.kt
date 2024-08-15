@@ -72,34 +72,34 @@ class ChatAdapter(var waiting:Boolean):ListAdapter<Chat,RecyclerView.ViewHolder>
         }
     }
 
-    class QueryViewHolder(view: View): RecyclerView.ViewHolder(view) {
+         private class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-         val userIcon: ImageView =view.findViewById(R.id.user_icon)
-         val userChat: TextView =view.findViewById(R.id.user_chat)
+            val userIcon: ImageView = view.findViewById(R.id.user_icon)
+            val userChat: TextView = view.findViewById(R.id.user_chat)
 
-        companion object {
-           fun from(parent:ViewGroup): QueryViewHolder {
-               val layoutInflater= LayoutInflater.from(parent.context)
-               val view=layoutInflater.inflate(R.layout.user_query,parent,false)
-               return QueryViewHolder(view)
-           }
-        }
-    }
-
-    class ResponseViewHolder(view: View): RecyclerView.ViewHolder(view) {
-      //  private val botIcon: ImageView =view.findViewById(R.id.bot_icon)
-         val botResponse: TextView =view.findViewById(R.id.ai_response)
-         val waiting:ImageView=view.findViewById(R.id.waiting)
-        val botIcon:ImageView=view.findViewById(R.id.bot_icon)
-        companion object {
-            fun from(parent:ViewGroup): ResponseViewHolder {
-                val layoutInflater= LayoutInflater.from(parent.context)
-                val view=layoutInflater.inflate(R.layout.ai_response,parent,false)
-                return ResponseViewHolder(view)
+            companion object {
+                fun from(parent: ViewGroup): QueryViewHolder {
+                    val layoutInflater = LayoutInflater.from(parent.context)
+                    val view = layoutInflater.inflate(R.layout.user_query, parent, false)
+                    return QueryViewHolder(view)
+                }
             }
         }
-    }
 
+         private class ResponseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            //  private val botIcon: ImageView =view.findViewById(R.id.bot_icon)
+            val botResponse: TextView = view.findViewById(R.id.ai_response)
+            val waiting: ImageView = view.findViewById(R.id.waiting)
+            val botIcon: ImageView = view.findViewById(R.id.bot_icon)
+
+            companion object {
+                fun from(parent: ViewGroup): ResponseViewHolder {
+                    val layoutInflater = LayoutInflater.from(parent.context)
+                    val view = layoutInflater.inflate(R.layout.ai_response, parent, false)
+                    return ResponseViewHolder(view)
+                }
+            }
+        }
 }
 
 class ChatDiffCallBack():DiffUtil.ItemCallback<Chat>(){

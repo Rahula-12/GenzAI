@@ -24,4 +24,5 @@
     <string name="sign_out">SIGN OUT</string>
     <string name="click_to_upload_image">Click to upload image</string>
     <string name="submit_txt">Submit</string>
+    <string name="please_check_your_internet_connection">Please check your internet connection</string>
 </resources>

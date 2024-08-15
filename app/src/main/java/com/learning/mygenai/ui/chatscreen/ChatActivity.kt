@@ -1,22 +1,38 @@
 package com.learning.mygenai.ui.chatscreen
 
+import android.app.ActionBar.LayoutParams
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
+import com.learning.mygenai.GenAIApplication
 import com.learning.mygenai.R
 import com.learning.mygenai.databinding.*
+import com.learning.mygenai.internetAlertWorker.InternetAlertWorker
+import com.learning.mygenai.internetDialog
 import com.learning.mygenai.ui.chatscreen.normalquery.ChatFragment
 import com.learning.mygenai.ui.chatscreen.normalquery.ChatViewModel
 import com.learning.mygenai.ui.chatscreen.picturequery.PhotoQueryFragment
@@ -26,6 +42,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -42,32 +59,75 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        Log.d("currentUser",FirebaseAuth.getInstance().currentUser?.email.toString())
-        binding= DataBindingUtil.setContentView(this,R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 //        binding.myToolbar.showOverflowMenu()
         setSupportActionBar(binding.myToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 //        binding.myToolbar.clearFocus()
-        chatViewModel= ViewModelProvider(this)[ChatViewModel::class.java]
-        photoQueryViewModel=ViewModelProvider(this)[PhotoQueryViewModel::class.java]
-        binding.logOut.setOnClickListener{
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            Toast.makeText(this, "Please Sign in first", Toast.LENGTH_SHORT).show()
+            finish()
+            val authenticateIntent = Intent(this, UserAuthenticateActivity::class.java)
+            authenticateIntent.putExtras(intent)
+            startActivity(authenticateIntent)
+        }
+        chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
+        Log.d("ViewModel", "Inside ChatActivity:$chatViewModel")
+        photoQueryViewModel = ViewModelProvider(this)[PhotoQueryViewModel::class.java]
+        Log.d("PhotoViewModel", "Inside ChatActivity:$photoQueryViewModel")
+        binding.logOut.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
 //            val googleSignInClient=GoogleSignIn.getClient(this,
 //                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build())
             googleSignInClient.signOut()
-            val intent=Intent(this,UserAuthenticateActivity::class.java)
-            Toast.makeText(this,"Logged Out Successfully",Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, UserAuthenticateActivity::class.java)
+            Toast.makeText(this, "Logged Out Successfully", Toast.LENGTH_SHORT).show()
             startActivity(intent)
         }
         enableEdgeToEdge()
 //        setSupportActionBar(findViewById(R.id.my_toolbar))
         setContentView(binding.root)
-      //  binding= DataBindingUtil.setContentView(this,R.layout.activity_main)
-      //  setContentView(R.layout.activity_main)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
+        Log.d("IntentType", intent.type.toString())
+        if (intent.type?.contains("image") == true) {
+            Log.d("Inside", "Inside")
+            val navHostFragment: Fragment =
+                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            val bundle=Bundle()
+            bundle.putParcelable("imageUri",intent.getParcelableExtra(Intent.EXTRA_STREAM))
+            Log.d("imageUri", intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM).toString())
+            navHostFragment.findNavController()
+                .navigate(R.id.action_chatFragment_to_photoQueryFragment,bundle)
+        }
+        lifecycleScope.launch {
+            while (true){
+                val connectivity=isNetworkAvailable(this@ChatActivity)
+                if(!connectivity) {
+                    internetDialog(this@ChatActivity)
+                }
+                delay(10000L)
+            }
+        }
+    }
+
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val workRequest= OneTimeWorkRequestBuilder<InternetAlertWorker>().build()
+        WorkManager.getInstance(this).enqueueUniqueWork("Internet Alert",
+            ExistingWorkPolicy.REPLACE,workRequest)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        WorkManager.getInstance(this).cancelUniqueWork("Internet Alert")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -77,7 +137,6 @@ class ChatActivity : AppCompatActivity() {
         val photoQuery=menu.findItem(R.id.photo_query)
         val navHostFragment: Fragment? =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView)
-        navHostFragment?.childFragmentManager?.fragments
         val topFragment = navHostFragment!!.childFragmentManager.fragments.lastOrNull()
         Log.d("Clear",topFragment?.javaClass.toString())
         if(topFragment is PhotoQueryFragment) {
@@ -136,5 +195,6 @@ class ChatActivity : AppCompatActivity() {
         finish()
         super.onBackPressed()
     }
+
 
 }

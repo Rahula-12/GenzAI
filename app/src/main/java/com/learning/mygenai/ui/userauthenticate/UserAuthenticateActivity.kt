@@ -2,7 +2,10 @@ package com.learning.mygenai.ui.userauthenticate
 
 import android.app.ActionBar.LayoutParams
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,6 +16,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -23,10 +31,17 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
+import com.learning.mygenai.GenAIApplication
 import com.learning.mygenai.R
 import com.learning.mygenai.databinding.ActivityUserAuthenticateBinding
+import com.learning.mygenai.internetAlertWorker.InternetAlertWorker
+import com.learning.mygenai.internetDialog
 import com.learning.mygenai.ui.chatscreen.ChatActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -49,8 +64,9 @@ class UserAuthenticateActivity : AppCompatActivity() {
         enableEdgeToEdge()
         mAuth = FirebaseAuth.getInstance()
         if(mAuth.currentUser!=null) {
-            val intent=Intent(this,ChatActivity::class.java)
-            startActivity(intent)
+            val chatIntent=Intent(this,ChatActivity::class.java)
+            chatIntent.putExtras(intent)
+            startActivity(chatIntent)
             finish()
         }
         setContentView(R.layout.activity_user_authenticate)
@@ -101,8 +117,9 @@ class UserAuthenticateActivity : AppCompatActivity() {
                         Toast.makeText(this, "Logged in Successfully", Toast.LENGTH_SHORT).show()
                         binding.email.setText("")
                         binding.password.setText("")
-                        val intent = Intent(this, ChatActivity::class.java)
-                        startActivity(intent)
+                        val chatIntent=Intent(this,ChatActivity::class.java)
+                        chatIntent.putExtras(intent)
+                        startActivity(chatIntent)
                         finish()
                     }.addOnFailureListener(this) {
                         Toast.makeText(
@@ -161,6 +178,24 @@ class UserAuthenticateActivity : AppCompatActivity() {
             val signInIntent = mGoogleSignInClient.signInIntent
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
+        lifecycleScope.launch {
+            while (true){
+                val connectivity=isNetworkAvailable(this@UserAuthenticateActivity)
+                if(!connectivity) {
+                   internetDialog(this@UserAuthenticateActivity)
+                }
+                delay(10000L)
+            }
+        }
+    }
+
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -186,9 +221,11 @@ class UserAuthenticateActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val intent=Intent(this,ChatActivity::class.java)
                     Toast.makeText(this, "Logged in Successfully", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
+                    val chatIntent=Intent(this,ChatActivity::class.java)
+                    chatIntent.putExtras(intent)
+                    startActivity(chatIntent)
+                    finish()
                 } else {
                     // If sign in fails, display a message to the user.
                     Toast.makeText(this, "Authentication Failed.", Toast.LENGTH_SHORT).show()
@@ -227,6 +264,17 @@ class UserAuthenticateActivity : AppCompatActivity() {
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
+    override fun onStart() {
+        super.onStart()
+        val workRequest= OneTimeWorkRequestBuilder<InternetAlertWorker>().build()
+        WorkManager.getInstance(this).enqueueUniqueWork("Internet Alert",ExistingWorkPolicy.REPLACE,workRequest)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        WorkManager.getInstance(this).cancelUniqueWork("Internet Alert")
+    }
+
     private fun signInWithCredential(credential: PhoneAuthCredential) {
         // inside this method we are checking if
         // the code entered is correct or not.
@@ -235,12 +283,10 @@ class UserAuthenticateActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     // if the code is correct and the task is successful
                     // we are sending our user to new activity.
-                    val i: Intent = Intent(
-                        this,
-                        ChatActivity::class.java
-                    )
                     Toast.makeText(this@UserAuthenticateActivity,"Logged In Successfully",Toast.LENGTH_SHORT).show()
-                    startActivity(i)
+                    val chatIntent=Intent(this,ChatActivity::class.java)
+                    chatIntent.putExtras(intent)
+                    startActivity(chatIntent)
                     finish()
                 } else {
                     // if the code is not correct then we are
