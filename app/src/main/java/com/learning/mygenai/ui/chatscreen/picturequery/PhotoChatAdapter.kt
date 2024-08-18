@@ -26,7 +26,7 @@ class PhotoChatAdapter(var loading:Boolean):ListAdapter<PhotoChat,PhotoQueryView
         val item=getItem(position)
         Glide.with(holder.photoView).load(item.photoUri.toUri()).placeholder(R.drawable.loading).into(holder.photoView)
         Glide.with(holder.botIcon).load(R.drawable.chatbot).transform(CircleCrop()).into(holder.botIcon)
-        holder.photoView.rotation=90F
+//        holder.photoView.rotation=90F
         holder.userQuery.text=item.userQuery
         holder.aiResponse.text=item.response
         if(loading && position==itemCount-1) {

@@ -25,4 +25,8 @@
     <string name="click_to_upload_image">Click to upload image</string>
     <string name="submit_txt">Submit</string>
     <string name="please_check_your_internet_connection">Please check your internet connection</string>
+    <string name="please_enter_phone_number_for_otp_verification">Please enter phone number for OTP Verification</string>
+    <string name="phone_verification">Phone Verification</string>
+    <string name="enter_otp_number">Enter OTP Number</string>
+    <string name="please_enter_otp_number">Please enter OTP for Mobile Number %1$s</string>
 </resources>

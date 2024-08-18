@@ -1,20 +1,21 @@
 package com.learning.mygenai.ui.chatscreen
 
-import android.app.ActionBar.LayoutParams
-import android.app.Dialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.ConnectivityManager
+import android.net.ConnectivityManager.NetworkCallback
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -23,36 +24,33 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
-import com.learning.mygenai.GenAIApplication
 import com.learning.mygenai.R
-import com.learning.mygenai.databinding.*
-import com.learning.mygenai.internetAlertWorker.InternetAlertWorker
+import com.learning.mygenai.databinding.ActivityMainBinding
 import com.learning.mygenai.internetDialog
-import com.learning.mygenai.ui.chatscreen.normalquery.ChatFragment
 import com.learning.mygenai.ui.chatscreen.normalquery.ChatViewModel
 import com.learning.mygenai.ui.chatscreen.picturequery.PhotoQueryFragment
 import com.learning.mygenai.ui.chatscreen.picturequery.PhotoQueryViewModel
 import com.learning.mygenai.ui.userauthenticate.UserAuthenticateActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChatActivity : AppCompatActivity() {
 
+    private lateinit var receiver: BroadcastReceiver
+
+    private lateinit var networkCallback: NetworkCallback
+
     @Inject
      lateinit var googleSignInClient: GoogleSignInClient
-    lateinit var currentMenu:Menu
-     lateinit var chatViewModel: ChatViewModel
-     lateinit var photoQueryViewModel: PhotoQueryViewModel
+
+    private lateinit var currentMenu:Menu
+     private lateinit var chatViewModel: ChatViewModel
+     private lateinit var photoQueryViewModel: PhotoQueryViewModel
 //    private lateinit var button: Button
     private lateinit var binding: ActivityMainBinding
     //private lateinit var binding: ActivityMainBinding
@@ -72,9 +70,9 @@ class ChatActivity : AppCompatActivity() {
             startActivity(authenticateIntent)
         }
         chatViewModel = ViewModelProvider(this)[ChatViewModel::class.java]
-        Log.d("ViewModel", "Inside ChatActivity:$chatViewModel")
+//        Log.d("ViewModel", "Inside ChatActivity:$chatViewModel")
         photoQueryViewModel = ViewModelProvider(this)[PhotoQueryViewModel::class.java]
-        Log.d("PhotoViewModel", "Inside ChatActivity:$photoQueryViewModel")
+//        Log.d("ViewModel", "Inside ChatActivity:$photoQueryViewModel")
         binding.logOut.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
 //            val googleSignInClient=GoogleSignIn.getClient(this,
@@ -94,19 +92,19 @@ class ChatActivity : AppCompatActivity() {
                 supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
             val bundle=Bundle()
             bundle.putParcelable("imageUri",intent.getParcelableExtra(Intent.EXTRA_STREAM))
-            Log.d("imageUri", intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM).toString())
+//            Log.d("imageUri", intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM).toString())
             navHostFragment.findNavController()
                 .navigate(R.id.action_chatFragment_to_photoQueryFragment,bundle)
         }
-        lifecycleScope.launch {
-            while (true){
-                val connectivity=isNetworkAvailable(this@ChatActivity)
-                if(!connectivity) {
-                    internetDialog(this@ChatActivity)
-                }
-                delay(10000L)
-            }
-        }
+//        lifecycleScope.launch {
+//            while (true){
+//                val connectivity=isNetworkAvailable(this@ChatActivity)
+//                if(!connectivity) {
+//                    internetDialog(this@ChatActivity)
+//                }
+//                delay(10000L)
+//            }
+//        }
     }
 
     private fun isNetworkAvailable(context: Context): Boolean {
@@ -120,14 +118,62 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        val workRequest= OneTimeWorkRequestBuilder<InternetAlertWorker>().build()
-        WorkManager.getInstance(this).enqueueUniqueWork("Internet Alert",
-            ExistingWorkPolicy.REPLACE,workRequest)
+        if(Build.VERSION.SDK_INT< Build.VERSION_CODES.N) {
+            receiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context?, intent: Intent?) {
+                    context?.let {
+                        if (!isNetworkAvailable(it)) {
+                            lifecycleScope.launch {
+                                while (!isNetworkAvailable(it)) {
+                                    internetDialog(this@ChatActivity)
+                                    delay(10000L)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+        }
+        else {
+            networkCallback=object: NetworkCallback() {
+                override fun onLost(network: Network) {
+                    super.onLost(network)
+                    lifecycleScope.launch {
+                        while (!isNetworkAvailable(this@ChatActivity)) {
+                            internetDialog(this@ChatActivity)
+                            delay(10000L)
+                        }
+                    }
+                }
+                override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+                    val hasInternet = networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                    if (!hasInternet) {
+                        // Internet is not working
+                        lifecycleScope.launch {
+                            while (!isNetworkAvailable(this@ChatActivity)) {
+                                internetDialog(this@ChatActivity)
+                                delay(10000L)
+                            }
+                        }
+                    }
+                }
+            }
+            val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            connectivityManager.registerDefaultNetworkCallback(networkCallback)
+        }
     }
 
     override fun onStop() {
         super.onStop()
-        WorkManager.getInstance(this).cancelUniqueWork("Internet Alert")
+        if(Build.VERSION.SDK_INT<Build.VERSION_CODES.N) {
+            if (::receiver.isInitialized) unregisterReceiver(receiver)
+        }
+        else {
+            val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            if(::networkCallback.isInitialized)
+                connectivityManager.unregisterNetworkCallback(networkCallback)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

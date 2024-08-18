@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="phone_number"
+            type="String" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.userauthenticate.phonenumberauthenticate.OtpEnterFragment">
+
+    <EditText
+        android:id="@+id/otp6"
+        android:maxLength="1"
+        android:inputType="number"
+        android:layout_width="45dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/oval_background"
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/otp5"
+        app:layout_constraintTop_toBottomOf="@+id/enter_otp_number_subheading"
+        tools:text="0" />
+
+    <EditText
+        android:id="@+id/otp5"
+        android:maxLength="1"
+        android:inputType="number"
+        android:layout_width="45dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/oval_background"
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/otp4"
+        app:layout_constraintTop_toBottomOf="@+id/enter_otp_number_subheading"
+        tools:text="0" />
+
+    <EditText
+        android:id="@+id/otp4"
+        android:maxLength="1"
+        android:inputType="number"
+        android:layout_width="45dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/oval_background"
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/otp3"
+        app:layout_constraintTop_toBottomOf="@+id/enter_otp_number_subheading"
+        tools:text="0" />
+
+    <EditText
+        android:id="@+id/otp3"
+        android:maxLength="1"
+        android:inputType="number"
+        android:layout_width="45dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/oval_background"
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/otp2"
+        app:layout_constraintTop_toBottomOf="@+id/enter_otp_number_subheading"
+        tools:text="0" />
+
+    <EditText
+        android:id="@+id/otp2"
+        android:maxLength="1"
+        android:layout_width="45dp"
+        android:inputType="number"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/oval_background"
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/otp1"
+        app:layout_constraintTop_toBottomOf="@+id/enter_otp_number_subheading"
+        tools:text="0" />
+
+    <ImageView
+        android:id="@+id/otp_icon"
+        android:layout_width="106dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="112dp"
+        android:src="@drawable/otp_icon"
+        app:tint="?attr/colorOnSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/enter_otp_number_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:text="@string/enter_otp_number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otp_icon" />
+
+    <TextView
+        android:id="@+id/enter_otp_number_subheading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@{@string/please_enter_otp_number(phone_number)}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_otp_number_heading" />
+
+    <EditText
+        app:layout_constrainedWidth="true"
+        android:maxLength="1"
+        android:id="@+id/otp1"
+        android:inputType="number"
+        android:layout_width="45dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/oval_background"
+        android:gravity="center"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_otp_number_subheading"
+        tools:text="0" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/submit_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Submit"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otp1" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/resend_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Resend"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/submit_button" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

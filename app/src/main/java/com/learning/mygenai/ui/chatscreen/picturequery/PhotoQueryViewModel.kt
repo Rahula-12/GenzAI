@@ -70,8 +70,8 @@ class PhotoQueryViewModel @Inject constructor(private val application: Applicati
                 _loading.value=false
             }
 
-            val bytes = ByteArrayOutputStream()
-            image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+//            val bytes = ByteArrayOutputStream()
+//            image.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
 
 
         }

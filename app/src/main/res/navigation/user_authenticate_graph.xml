@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_authenticate_graph"
+    app:startDestination="@id/mainAuthenticateFragment">
+
+    <fragment
+        android:id="@+id/phoneNumberFragment"
+        android:name="com.learning.mygenai.ui.userauthenticate.phonenumberauthenticate.PhoneNumberFragment"
+        android:label="PhoneNumberFragment" >
+        <action
+            android:id="@+id/action_phoneNumberFragment_to_otpEnterFragment"
+            app:destination="@id/otpEnterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/otpEnterFragment"
+        android:name="com.learning.mygenai.ui.userauthenticate.phonenumberauthenticate.OtpEnterFragment"
+        android:label="OtpEnterFragment" >
+    </fragment>
+    <fragment
+        android:id="@+id/mainAuthenticateFragment"
+        android:name="com.learning.mygenai.ui.userauthenticate.MainAuthenticateFragment"
+        android:label="MainAuthenticateFragment" >
+        <action
+            android:id="@+id/action_mainAuthenticateFragment_to_phoneNumberFragment"
+            app:destination="@id/phoneNumberFragment" />
+    </fragment>
+</navigation>

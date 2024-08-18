@@ -13,6 +13,7 @@ plugins {
 buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.0")
+        classpath(libs.secrets.gradle.plugin)
 
     }
 }

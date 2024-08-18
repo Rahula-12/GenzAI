@@ -16,6 +16,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -56,9 +58,25 @@ class PhotoQueryFragment : Fragment() {
         dialog.setTitle("Photo Query")
         dialog.setContentView(R.layout.photo_query_dialog)
         dialogImageView=dialog.findViewById(R.id.image_upload)
+        val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult: ActivityResult? ->
+//            if(resultCode==-1 && requestCode==1888) {
+                currentImage=activityResult!!.data!!.extras!!["data"] as Bitmap
+                if(::dialogImageView.isInitialized) {
+                    val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
+                    currentPhoto.rotation= 90F
+                    Glide.with(currentPhoto).asBitmap().load(currentImage).into(currentPhoto)
+//                val layoutParams=currentPhoto.layoutParams
+//                layoutParams.height=300
+//                layoutParams.width=1000
+//                currentPhoto.layoutParams=layoutParams
+                }
+//            }
+
+        }
         dialogImageView.setOnClickListener{
-            val intent=Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE)
-            startActivityForResult(intent,1888)
+//            val intent=Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE)
+//            startActivityForResult(intent,1888)
+            getContent.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
         }
         val submitButton=dialog.findViewById<Button>(R.id.askButton)
         val prompt=dialog.findViewById<TextView>(R.id.prompt)
@@ -90,11 +108,11 @@ class PhotoQueryFragment : Fragment() {
         if(arguments!=null) {
             val imageUri= requireArguments().getParcelable<Uri>("imageUri")
             imageUri?.let {
-
                 val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
-                Glide.with(currentPhoto).asBitmap().load(it).into(currentPhoto)
+                currentPhoto.rotation= 360F
+                Glide.with(currentPhoto).load(it).into(currentPhoto)
                 currentImage=uriToBitmap(it)
-                dialogImageView.rotation= 90F
+//                dialogImageView.rotation= 90F
                 dialog.show()
             }
         }
@@ -106,12 +124,12 @@ class PhotoQueryFragment : Fragment() {
             currentImage=data!!.extras!!["data"] as Bitmap
             if(::dialogImageView.isInitialized) {
                 val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
+                currentPhoto.rotation= 90F
                 Glide.with(currentPhoto).asBitmap().load(currentImage).into(currentPhoto)
 //                val layoutParams=currentPhoto.layoutParams
 //                layoutParams.height=300
 //                layoutParams.width=1000
 //                currentPhoto.layoutParams=layoutParams
-                dialogImageView.rotation= 90F
             }
         }
     }
