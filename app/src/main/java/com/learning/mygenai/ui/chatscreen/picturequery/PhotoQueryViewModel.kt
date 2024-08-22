@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,7 +14,12 @@ import com.google.ai.client.generativeai.type.content
 import com.learning.mygenai.database.PhotoChatRepository
 import com.learning.mygenai.model.PhotoChat
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
@@ -53,21 +59,51 @@ class PhotoQueryViewModel @Inject constructor(private val application: Applicati
                 text(prompt)
             }
             launch {
-                _loading.value=true
                 val path: String = MediaStore.Images.Media.insertImage(
                     application.contentResolver,
                     image,
                     image.toString(),
                     null
                 )
-                insertPhotoQuery(PhotoChat(photoUri = Uri.parse(path).toString(), userQuery = prompt, response = "#"))
+                insertPhotoQuery(PhotoChat(photoUri = Uri.parse(path).toString(), userQuery = prompt, response = "We are facing some issue. Please try again."))
             }
-            launch {
-                val response = generativeModel.generateContent(inputContent).text.toString()
+            try {
+                coroutineScope {
+                    _loading.value=true
+                    delay(1000)
+                    val job = launch {
+//                        delay(6000)
+//                        Log.d("photo_query","Entered")
+                        val latestChat=photoChatRepository.getLastPhotoChat()
+//                        Log.d("cfhj","1")
+                        latestChat.response=generativeModel.generateContent(inputContent).text.toString()
+//                        Log.d("cfhj","2")
+                        photoChatRepository.updatePhotoChat(latestChat)
+//                        Log.d("cfhj","3")
+                        withContext(Dispatchers.Main){
+                        _loading.value=false
+                            }
+                    }
+                    launch {
+                        delay(5000)
+                        withContext(Dispatchers.IO) {
+                            val latestChat = photoChatRepository.getLastPhotoChat()
+                            if(latestChat.response=="We are facing some issue. Please try again.")
+                            latestChat.response = "Please try again."
+                            photoChatRepository.updatePhotoChat(latestChat)
+                        }
+                        _loading.value=false
+                        job.cancel()
+//                        Log.d("photo_query","Cancelled ${loading.value} ${allQueries.value?.size}")
+                    }
+                }
+            }
+            catch (e:Exception) {
                 val latestChat=photoChatRepository.getLastPhotoChat()
-                latestChat.response=response
-                photoChatRepository.updatePhotoChat(latestChat)
-                _loading.value=false
+                latestChat.response=e.message.toString()
+                withContext(Dispatchers.Main) {
+                    _loading.value = false
+                }
             }
 
 //            val bytes = ByteArrayOutputStream()

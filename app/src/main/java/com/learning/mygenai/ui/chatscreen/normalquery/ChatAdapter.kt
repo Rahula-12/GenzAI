@@ -59,8 +59,8 @@ class ChatAdapter(var waiting:Boolean):ListAdapter<Chat,RecyclerView.ViewHolder>
         }
         else {
             Glide.with((holder as ResponseViewHolder).botIcon).load(R.drawable.chatbot).transform(CircleCrop()).into(holder.botIcon)
-            if(waiting && position==itemCount-1 && getItem(position).chatMessage=="#") {
-                (holder as ResponseViewHolder).waiting.isVisible=true
+            if(waiting && position==itemCount-1 && getItem(position).chatMessage=="We are facing some issue. Please try again.") {
+                holder.waiting.isVisible=true
                 Glide.with(holder.itemView.context).load(R.drawable.loading).into(holder.waiting)
                 holder.botResponse.isVisible=false
             }

@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.learning.mygenai.databinding.FragmentChatBinding
+import com.learning.mygenai.isNetworkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -47,7 +48,8 @@ class ChatFragment : Fragment() {
         }
 
         binding.askButton.setOnClickListener {
-            if (binding.prompt.text.toString() == "") {
+            if(!isNetworkAvailable(requireContext()))  Toast.makeText(requireContext(),"Please check your internet connection.",Toast.LENGTH_SHORT).show()
+            else if (binding.prompt.text.toString() == "") {
                 Toast.makeText(
                 activity,
                 "Please ask some question",
@@ -63,7 +65,12 @@ class ChatFragment : Fragment() {
                 val imm =
                     requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-                viewModel.askQuery(binding.prompt.text.toString())
+                try {
+                    viewModel.askQuery(binding.prompt.text.toString())
+                }
+                catch (e:Exception) {
+                    Toast.makeText(requireContext(),e.message.toString(),Toast.LENGTH_SHORT).show()
+                }
                 binding.prompt.setText("")
             }
         }

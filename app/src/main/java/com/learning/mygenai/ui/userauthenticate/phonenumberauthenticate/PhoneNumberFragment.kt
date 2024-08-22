@@ -60,6 +60,7 @@ class PhoneNumberFragment : Fragment() {
                         this@PhoneNumberFragment.verificationId=verificationId
                         Toast.makeText(requireContext(),"Please enter OTP sent to your phone number with ${this@PhoneNumberFragment.verificationId}",Toast.LENGTH_SHORT).show()
                         bundle.putString("verificationId",verificationId)
+                        bundle.putParcelable("token",p1)
                         Log.d("verificationId","$verificationId in PhoneNumberFragment")
                         findNavController().navigate(R.id.action_phoneNumberFragment_to_otpEnterFragment,bundle)
                     }

@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.learning.mygenai.R
 import com.learning.mygenai.databinding.FragmentPhotoQueryBinding
+import com.learning.mygenai.isNetworkAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 
@@ -50,9 +51,6 @@ class PhotoQueryFragment : Fragment() {
         val adapter=PhotoChatAdapter(false)
         val viewModel=ViewModelProvider(requireActivity())[PhotoQueryViewModel::class.java]
         Log.d("PhotoViewModel","Inside PhotoQueryFragment:$viewModel")
-        viewModel.loading.observe(viewLifecycleOwner) {
-            adapter.loading=it
-        }
         binding.photoQueries.adapter=adapter
         dialog=Dialog(requireContext())
         dialog.setTitle("Photo Query")
@@ -81,7 +79,8 @@ class PhotoQueryFragment : Fragment() {
         val submitButton=dialog.findViewById<Button>(R.id.askButton)
         val prompt=dialog.findViewById<TextView>(R.id.prompt)
         submitButton.setOnClickListener {
-            if(currentImage==null) {
+            if(!isNetworkAvailable(requireContext()))  Toast.makeText(requireContext(),"Please check your internet connection.",Toast.LENGTH_SHORT).show()
+            else if(currentImage==null) {
                 Toast.makeText(requireContext(),"Please upload image first",Toast.LENGTH_SHORT).show()
             }
             else if(prompt.text=="") {
@@ -89,21 +88,26 @@ class PhotoQueryFragment : Fragment() {
             }
             else {
                 viewModel.getResponse(currentImage!!,prompt.text.toString())
-                currentImage=null
+//                currentImage=null
                 prompt.text = ""
                 dialog.cancel()
             }
         }
-        dialog.setOnCancelListener{
-            currentImage=null
-        }
         binding.addQuery.setOnClickListener {
+//            val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
+//            Glide.with(currentPhoto).load(R.drawable.upload_image).into(currentPhoto)
+////            currentPhoto.rotation=-90F
+//            currentImage=null
             dialog.show()
         }
         viewModel.allQueries.observe(viewLifecycleOwner){
             adapter.submitList(it)
             if(it.isNotEmpty())
             binding.photoQueries.smoothScrollToPosition(it.size-1)
+        }
+        viewModel.loading.observe(viewLifecycleOwner) {load->
+//            Log.d("loadingVal in PhotoQueryFragment","$load")
+            adapter.loading=load
         }
         if(arguments!=null) {
             val imageUri= requireArguments().getParcelable<Uri>("imageUri")

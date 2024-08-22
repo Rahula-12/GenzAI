@@ -116,7 +116,6 @@ class MainAuthenticateFragment : Fragment() {
         }
         binding.phoneButton.setOnClickListener{
 //            binding.fragmentContainerView2.visibility=View.VISIBLE
-            Toast.makeText(requireContext(),"Hi",Toast.LENGTH_SHORT).show()
             this.findNavController().navigate(R.id.action_mainAuthenticateFragment_to_phoneNumberFragment)
 //            val phoneDialog= Dialog(this)
 //            phoneDialog.setContentView(R.layout.phone_number_input)

@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.learning.mygenai.R
 import com.learning.mygenai.databinding.ActivityMainBinding
 import com.learning.mygenai.internetDialog
+import com.learning.mygenai.isNetworkAvailable
 import com.learning.mygenai.ui.chatscreen.normalquery.ChatViewModel
 import com.learning.mygenai.ui.chatscreen.picturequery.PhotoQueryFragment
 import com.learning.mygenai.ui.chatscreen.picturequery.PhotoQueryViewModel
@@ -105,15 +106,6 @@ class ChatActivity : AppCompatActivity() {
 //                delay(10000L)
 //            }
 //        }
-    }
-
-    private fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return false
-        val networkCapabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-
-        return networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
     }
 
     override fun onStart() {

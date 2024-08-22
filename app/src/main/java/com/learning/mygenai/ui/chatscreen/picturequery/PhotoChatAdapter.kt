@@ -1,5 +1,6 @@
 package com.learning.mygenai.ui.chatscreen.picturequery
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,12 +30,14 @@ class PhotoChatAdapter(var loading:Boolean):ListAdapter<PhotoChat,PhotoQueryView
 //        holder.photoView.rotation=90F
         holder.userQuery.text=item.userQuery
         holder.aiResponse.text=item.response
-        if(loading && position==itemCount-1) {
+        if(loading && position==itemCount-1 && getItem(position).response=="We are facing some issue. Please try again.") {
+//            Log.d("loadingVal","$loading $position $itemCount")
             Glide.with(holder.loadingImage).load(R.drawable.loading).into(holder.loadingImage)
             holder.loadingImage.visibility=View.VISIBLE
             holder.aiResponse.visibility=View.INVISIBLE
         }
         else {
+//            Log.d("loadingVal","$loading $itemCount")
             holder.loadingImage.visibility=View.INVISIBLE
             holder.aiResponse.visibility=View.VISIBLE
         }
