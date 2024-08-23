@@ -13,6 +13,7 @@ import com.learning.mygenai.model.Parts
 import com.learning.mygenai.model.Query
 import com.learning.mygenai.network.RequestRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -47,7 +48,7 @@ class ChatViewModel @Inject constructor(
                 _waiting.value = true
                 chatRepository.insertChat(Chat(chatMessage = "We are facing some issue. Please try again.", chatType = 1))
                 val query=Query(contents = Contents(parts = Parts(question)))
-                   val queryResponse=async {
+                   val queryResponse=async(Dispatchers.IO) {
 //                       delay(11000)
                        Log.d("normal_query","inside askQuery")
                        requestRepository.askQuery(query)

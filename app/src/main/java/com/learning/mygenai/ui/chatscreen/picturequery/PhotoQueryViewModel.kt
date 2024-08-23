@@ -71,7 +71,7 @@ class PhotoQueryViewModel @Inject constructor(private val application: Applicati
                 coroutineScope {
                     _loading.value=true
                     delay(1000)
-                    val job = launch {
+                    val job = launch(Dispatchers.IO) {
 //                        delay(6000)
 //                        Log.d("photo_query","Entered")
                         val latestChat=photoChatRepository.getLastPhotoChat()

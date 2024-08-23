@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.registerForActivityResult
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -15,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.PhoneAuthCredential
 import com.learning.mygenai.R
 import com.learning.mygenai.databinding.FragmentMainAuthenticateBinding
 import com.learning.mygenai.ui.chatscreen.ChatActivity
@@ -32,7 +33,6 @@ class MainAuthenticateFragment : Fragment() {
     private lateinit var viewModel: SignUpViewModel
     private lateinit var mAuth: FirebaseAuth
     private lateinit var binding: FragmentMainAuthenticateBinding
-    private var verificationId: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +41,7 @@ class MainAuthenticateFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_main_authenticate, container, false)
         viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
+        viewModel.testingCoroutine()
         binding.viewmodel = viewModel
         mAuth = FirebaseAuth.getInstance()
         if (mAuth.currentUser != null) {
@@ -155,33 +156,50 @@ class MainAuthenticateFragment : Fragment() {
                 binding.moveNext.text = "Sign Up"
             }
         }
+        val googleButtonListener=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){activityResult->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(activityResult.data)
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)
+                account?.run {
+                    firebaseAuthWithGoogle(idToken!!)
+                    Toast.makeText(
+                        requireContext(),
+                        "Please wait while we are checking",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } catch (e: ApiException) {
+                // Google Sign In failed, update UI appropriately
+            }
+        }
         binding.googleButton.setOnClickListener {
             mAuth.signOut()
             val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent, RC_SIGN_IN)
+            googleButtonListener.launch(signInIntent)
         }
             return binding.root
         }
-        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            super.onActivityResult(requestCode, resultCode, data)
-            if (requestCode == RC_SIGN_IN) {
-                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                try {
-                    // Google Sign In was successful, authenticate with Firebase
-                    val account = task.getResult(ApiException::class.java)
-                    account?.run {
-                        firebaseAuthWithGoogle(idToken!!)
-                        Toast.makeText(
-                            requireContext(),
-                            "Please wait while we are checking",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } catch (e: ApiException) {
-                    // Google Sign In failed, update UI appropriately
-                }
-            }
-        }
+//        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//            super.onActivityResult(requestCode, resultCode, data)
+//            if (requestCode == RC_SIGN_IN) {
+//                val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+//                try {
+//                    // Google Sign In was successful, authenticate with Firebase
+//                    val account = task.getResult(ApiException::class.java)
+//                    account?.run {
+//                        firebaseAuthWithGoogle(idToken!!)
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "Please wait while we are checking",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                } catch (e: ApiException) {
+//                    // Google Sign In failed, update UI appropriately
+//                }
+//            }
+//        }
 
         private fun firebaseAuthWithGoogle(idToken: String) {
             val credential = GoogleAuthProvider.getCredential(idToken, null)
