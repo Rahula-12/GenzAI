@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.learning.mygenai.databinding.FragmentChatBinding
 import com.learning.mygenai.isNetworkAvailable
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,6 +1,6 @@
 package com.learning.mygenai.database
 
-import com.learning.mygenai.model.PhotoChat
+import com.learning.mygenai.model.photodbmodel.PhotoChat
 import javax.inject.Inject
 
 class PhotoChatRepository @Inject constructor(private val photoQueryDao: PhotoQueryDao) {

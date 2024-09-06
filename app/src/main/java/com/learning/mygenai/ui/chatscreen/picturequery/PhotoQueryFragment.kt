@@ -22,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import coil.load
 import com.bumptech.glide.Glide
 import com.learning.mygenai.R
 import com.learning.mygenai.databinding.FragmentPhotoQueryBinding
@@ -62,7 +63,7 @@ class PhotoQueryFragment : Fragment() {
                 if(::dialogImageView.isInitialized) {
                     val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
                     currentPhoto.rotation= 90F
-                    Glide.with(currentPhoto).asBitmap().load(currentImage).into(currentPhoto)
+                    currentPhoto.load(currentImage)
 //                val layoutParams=currentPhoto.layoutParams
 //                layoutParams.height=300
 //                layoutParams.width=1000
@@ -113,8 +114,8 @@ class PhotoQueryFragment : Fragment() {
             val imageUri= requireArguments().getParcelable<Uri>("imageUri")
             imageUri?.let {
                 val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
-                currentPhoto.rotation= 360F
-                Glide.with(currentPhoto).load(it).into(currentPhoto)
+                currentPhoto.rotation= 90F
+                currentPhoto.load(it)
                 currentImage=uriToBitmap(it)
 //                dialogImageView.rotation= 90F
                 dialog.show()
@@ -123,20 +124,20 @@ class PhotoQueryFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(resultCode==-1 && requestCode==1888) {
-            currentImage=data!!.extras!!["data"] as Bitmap
-            if(::dialogImageView.isInitialized) {
-                val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
-                currentPhoto.rotation= 90F
-                Glide.with(currentPhoto).asBitmap().load(currentImage).into(currentPhoto)
-//                val layoutParams=currentPhoto.layoutParams
-//                layoutParams.height=300
-//                layoutParams.width=1000
-//                currentPhoto.layoutParams=layoutParams
-            }
-        }
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        if(resultCode==-1 && requestCode==1888) {
+//            currentImage=data!!.extras!!["data"] as Bitmap
+//            if(::dialogImageView.isInitialized) {
+//                val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
+//                currentPhoto.rotation= 90F
+//                Glide.with(currentPhoto).asBitmap().load(currentImage).into(currentPhoto)
+////                val layoutParams=currentPhoto.layoutParams
+////                layoutParams.height=300
+////                layoutParams.width=1000
+////                currentPhoto.layoutParams=layoutParams
+//            }
+//        }
+//    }
 
 
     @Throws(IOException::class)

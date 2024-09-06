@@ -5,4 +5,5 @@
     <color name="light_grey">#E0E0E0</color>
     <color name="dark_grey">#9E9E9E</color>
     <color name="light_blue">#42A5F5</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

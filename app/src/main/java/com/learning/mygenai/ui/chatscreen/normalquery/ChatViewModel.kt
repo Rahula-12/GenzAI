@@ -1,17 +1,17 @@
 package com.learning.mygenai.ui.chatscreen.normalquery
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.learning.mygenai.database.ChatRepository
-import com.learning.mygenai.model.Chat
-import com.learning.mygenai.model.Contents
-import com.learning.mygenai.model.Parts
-import com.learning.mygenai.model.Query
-import com.learning.mygenai.network.RequestRepository
+import com.learning.mygenai.ApplicationDispatchers
+import com.learning.mygenai.repositories.ChatRepository
+import com.learning.mygenai.model.chatdbmodel.Chat
+import com.learning.mygenai.model.chatresponsemodel.Contents
+import com.learning.mygenai.model.chatresponsemodel.Parts
+import com.learning.mygenai.model.chatresponsemodel.Query
+import com.learning.mygenai.repositories.RequestRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -23,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor(
     private val requestRepository: RequestRepository,
-    private val chatRepository: ChatRepository
+    private val chatRepository: ChatRepository,
+    private val applicationDispatchers: ApplicationDispatchers
 ): ViewModel() {
 
     val wholeChat:LiveData<List<Chat>> = chatRepository.getAllChats()
@@ -32,7 +33,9 @@ class ChatViewModel @Inject constructor(
     val waiting:LiveData<Boolean> = _waiting
 
     fun askQuery(question:String) {
-        viewModelScope.launch {
+        println("Riya")
+        viewModelScope.launch(applicationDispatchers.mainDispatcher) {
+            println("Jindal")
             launch {
                 try {
                     coroutineScope {
@@ -47,10 +50,10 @@ class ChatViewModel @Inject constructor(
                 Log.d("normal_query","Entered")
                 _waiting.value = true
                 chatRepository.insertChat(Chat(chatMessage = "We are facing some issue. Please try again.", chatType = 1))
-                val query=Query(contents = Contents(parts = Parts(question)))
-                   val queryResponse=async(Dispatchers.IO) {
+                val query= Query(contents = Contents(parts = Parts(question)))
+                   val queryResponse=async(applicationDispatchers.ioDispatcher) {
 //                       delay(11000)
-                       Log.d("normal_query","inside askQuery")
+                       Log.d("normal_query", "Inside async block")
                        requestRepository.askQuery(query)
                    }
                     launch {
@@ -59,9 +62,11 @@ class ChatViewModel @Inject constructor(
                         queryResponse.cancel()
                     }
                     val lastChat=chatRepository.getLastChat()
+                    delay(1000)
                 Log.d("normal_query","got latest chat")
                     try {
                         Log.d("normal_query","updating lastChat")
+                        Log.d("normal_query1",queryResponse.await().candidates[0].content.parts[0].text)
                         lastChat.chatMessage=queryResponse.await().candidates[0].content.parts[0].text
                     }
                     catch (e:Exception) {
@@ -76,7 +81,7 @@ class ChatViewModel @Inject constructor(
     }
 
     fun deleteChats() {
-        viewModelScope.launch {
+        viewModelScope.launch(applicationDispatchers.mainDispatcher) {
             chatRepository.deleteChats()
         }
     }

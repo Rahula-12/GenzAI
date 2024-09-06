@@ -13,4 +13,13 @@
         <item name="android:textStyle">bold</item>
     </style>
     <style name="Theme.MyGenAI" parent="Base.Theme.MyGenAI" />
+    <style name="MyAlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:textColor">@color/black</item>
+        <item name="buttonBarPositiveButtonStyle">@style/buttonStyle</item>
+    </style>
+    <style name="buttonStyle">
+        <item name="android:textColor">@color/black</item>
+        <item name="backgroundTint">@color/transparent</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
 </resources>

@@ -1,6 +1,5 @@
 package com.learning.mygenai.ui.chatscreen.normalquery
 
-import android.content.res.Resources
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.auth.FirebaseAuth
 import com.learning.mygenai.R
-import com.learning.mygenai.model.Chat
+import com.learning.mygenai.model.chatdbmodel.Chat
 
 class ChatAdapter(var waiting:Boolean):ListAdapter<Chat,RecyclerView.ViewHolder>(ChatDiffCallBack()) {
 

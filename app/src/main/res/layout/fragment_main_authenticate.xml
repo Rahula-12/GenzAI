@@ -145,7 +145,7 @@
                     android:capitalize="none"
                     android:layout_height="wrap_content"
                     android:id="@+id/google_button"
-                    android:drawableLeft="@drawable/google_icon"
+                    android:drawableStart="@drawable/google_icon"
                     android:drawablePadding="5dp"
                     android:backgroundTint="?attr/colorPrimary"
                     android:textColor="?attr/colorAccent"
@@ -160,7 +160,8 @@
                     android:backgroundTint="?attr/colorPrimary"
                     android:textColor="?attr/colorAccent"
                     android:drawableLeft="@drawable/baseline_call_24"
-                    android:text="@string/phone_number"/>
+                    android:text="@string/phone_number"
+                    android:drawableStart="@drawable/baseline_call_24" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>

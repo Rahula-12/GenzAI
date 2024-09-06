@@ -1,6 +1,6 @@
 package com.learning.mygenai.database
 
-import com.learning.mygenai.model.Chat
+import com.learning.mygenai.model.chatdbmodel.Chat
 import okhttp3.internal.cacheGet
 import javax.inject.Inject
 

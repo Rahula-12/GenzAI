@@ -8,7 +8,7 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/Theme.MyGenAI"
+    android:theme="@style/Base.Theme.MyGenAI"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <data>

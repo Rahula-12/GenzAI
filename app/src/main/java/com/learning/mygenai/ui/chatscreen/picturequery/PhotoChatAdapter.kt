@@ -1,6 +1,5 @@
 package com.learning.mygenai.ui.chatscreen.picturequery
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +9,12 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.firebase.auth.FirebaseAuth
 import com.learning.mygenai.R
-import com.learning.mygenai.model.PhotoChat
+import com.learning.mygenai.model.photodbmodel.PhotoChat
 
 class PhotoChatAdapter(var loading:Boolean):ListAdapter<PhotoChat,PhotoQueryViewHolder>(PhotoQueryDiffCallBack()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoQueryViewHolder {
@@ -25,7 +25,8 @@ class PhotoChatAdapter(var loading:Boolean):ListAdapter<PhotoChat,PhotoQueryView
 
     override fun onBindViewHolder(holder: PhotoQueryViewHolder, position: Int) {
         val item=getItem(position)
-        Glide.with(holder.photoView).load(item.photoUri.toUri()).placeholder(R.drawable.loading).into(holder.photoView)
+       holder.photoView.load(item.photoUri.toUri()){placeholder(R.drawable.loading)}
+        holder.photoView.rotation=90f
         Glide.with(holder.botIcon).load(R.drawable.chatbot).transform(CircleCrop()).into(holder.botIcon)
 //        holder.photoView.rotation=90F
         holder.userQuery.text=item.userQuery

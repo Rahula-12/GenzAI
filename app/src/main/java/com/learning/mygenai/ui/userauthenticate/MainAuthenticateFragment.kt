@@ -41,7 +41,7 @@ class MainAuthenticateFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_main_authenticate, container, false)
         viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
-        viewModel.testingCoroutine()
+//        viewModel.testingCoroutine()
         binding.viewmodel = viewModel
         mAuth = FirebaseAuth.getInstance()
         if (mAuth.currentUser != null) {

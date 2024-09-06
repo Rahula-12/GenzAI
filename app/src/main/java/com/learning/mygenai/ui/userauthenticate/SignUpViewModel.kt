@@ -24,19 +24,19 @@ class SignUpViewModel @Inject constructor(): ViewModel() {
         _signUp.value=!(_signUp.value)!!
     }
 
-    fun testingCoroutine() {
-        Log.d("CoroutineTest","Beginning")
-        CoroutineScope(Dispatchers.Default).launch {
-            withContext(Dispatchers.Main) {
-                delay(1000)
-                Log.d("CoroutineTest","inside Coroutine1")
-            }
-//            launch {
-                Log.d("CoroutineTest", "inside Coroutine2")
+//    fun testingCoroutine() {
+//        Log.d("CoroutineTest","Beginning")
+//        CoroutineScope(Dispatchers.Default).launch {
+//            withContext(Dispatchers.Main) {
+//                delay(1000)
+//                Log.d("CoroutineTest","inside Coroutine1")
 //            }
-        }
-        Log.d("CoroutineTest","Ending")
-    }
+////            launch {
+//                Log.d("CoroutineTest", "inside Coroutine2")
+////            }
+//        }
+//        Log.d("CoroutineTest","Ending")
+//    }
 
 
 }

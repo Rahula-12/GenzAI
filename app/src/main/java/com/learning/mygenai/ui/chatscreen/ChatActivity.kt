@@ -57,7 +57,6 @@ class ChatActivity : AppCompatActivity() {
     //private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("ChatActivity",this.toString())
 //        Log.d("currentUser",FirebaseAuth.getInstance().currentUser?.email.toString())
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 //        binding.myToolbar.showOverflowMenu()

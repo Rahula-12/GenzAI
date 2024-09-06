@@ -5,8 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.learning.mygenai.model.Chat
-import com.learning.mygenai.model.PhotoChat
+import com.learning.mygenai.model.photodbmodel.PhotoChat
 import javax.inject.Inject
 
 @Dao

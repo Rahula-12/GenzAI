@@ -25,6 +25,7 @@
 
     <TextView
         android:visibility="gone"
+        android:textSize="15sp"
         android:backgroundTint="?attr/colorPrimary"
         android:textColor="?attr/colorAccent"
         android:scrollbars="horizontal"

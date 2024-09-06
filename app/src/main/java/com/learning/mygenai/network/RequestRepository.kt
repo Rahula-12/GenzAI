@@ -1,6 +1,6 @@
 package com.learning.mygenai.network
 
-import com.learning.mygenai.model.Query
+import com.learning.mygenai.model.chatresponsemodel.Query
 import javax.inject.Inject
 
 class RequestRepository @Inject constructor(private val chatAPIService: ChatAPIService) {

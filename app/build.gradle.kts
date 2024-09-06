@@ -1,3 +1,6 @@
+import com.android.ddmlib.Log
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -9,7 +12,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.google.gms.google.services)
 }
-
+val apiKey = if(project.rootProject.hasProperty("API_KEY")) project.properties["API_KEY"] else ""
+Log.d("apiKey",apiKey.toString())
 android {
     namespace = "com.learning.mygenai"
     compileSdk = 34
@@ -21,7 +25,11 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.learning.mygenai.customrunner.CustomTestRunner"
+        val properties= Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        val apiKey=properties.getProperty("API_KEY")
+        buildConfigField("String", "API_KEY", "\"${apiKey}\"")
     }
 
     buildTypes {
@@ -42,6 +50,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        buildConfig=true
     }
 }
 
@@ -56,6 +65,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.firebase.auth)
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -65,7 +75,8 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.5.0")
-
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    androidTestImplementation("androidx.arch.core:core-testing:2.1.0")
     //room dependencies
     val room_version = "2.6.1"
 
@@ -96,6 +107,49 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:4.11.0")
 
     implementation("com.google.ai.client.generativeai:generativeai:0.7.0")
+
+    implementation("io.coil-kt:coil:2.7.0")
+
+    // For Robolectric tests.
+    testImplementation("com.google.dagger:hilt-android-testing:2.44")
+    // ...with Kotlin.
+    kaptTest("com.google.dagger:hilt-android-compiler:2.44")
+    // ...with Java.
+    testAnnotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
+
+
+    // For instrumented tests.
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44")
+    // ...with Kotlin.
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44")
+    // ...with Java.
+    androidTestAnnotationProcessor("com.google.dagger:hilt-android-compiler:2.44")
+
+    // For local unit tests
+    testImplementation("com.google.dagger:hilt-android-testing:2.44") // Use the latest version
+    kaptTest("com.google.dagger:hilt-android-compiler:2.44")
+
+    // For instrumented tests
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+
+    // Mockito Annotations
+    testImplementation("org.mockito:mockito-core:5.2.1")
+//    testImplementation("org.mockito:mockito-android:5.2.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+//    androidTestImplementation("org.mockito:mockito-inline:5.2.1")
+
+    androidTestImplementation("org.mockito:mockito-core:5.2.1")
+//    androidTestImplementation("org.mockito:mockito-android:5.2.1")
+    androidTestImplementation("org.mockito.kotlin:mockito-kotlin:5.2.1")
+//    testImplementation("org.mockito:mockito-inline:5.2.1")
+    androidTestImplementation("com.linkedin.dexmaker:dexmaker-mockito-inline:2.28.1")
+    androidTestImplementation("com.linkedin.dexmaker:dexmaker:2.28.1")
 
 
 }

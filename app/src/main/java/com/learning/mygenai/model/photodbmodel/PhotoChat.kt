@@ -1,4 +1,4 @@
-package com.learning.mygenai.model
+package com.learning.mygenai.model.photodbmodel
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
