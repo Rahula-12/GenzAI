@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.content
+import com.learning.mygenai.BuildConfig
 import com.learning.mygenai.repositories.PhotoChatRepository
 import com.learning.mygenai.model.photodbmodel.PhotoChat
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,7 +47,7 @@ class PhotoQueryViewModel @Inject constructor(private val application: Applicati
                 // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
                 modelName = "gemini-1.5-flash",
                 // Access your API key as a Build Configuration variable (see "Set up your API key" above)
-                apiKey = "AIzaSyAFJlA5u5lxfACrCk4VR8MFKOsxfXYLlFU"
+                apiKey = BuildConfig.API_KEY
             )
 //            val bitmap = application.contentResolver.openInputStream(image).use { data ->
 //                BitmapFactory.decodeStream(data)
