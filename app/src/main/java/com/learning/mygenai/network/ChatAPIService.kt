@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 interface ChatAPIService {
 
-    @POST("v1beta/models/gemini-1.5-flash-latest:generateContent?key=${BuildConfig.API_KEY}")
+    @POST("v1beta/models/gemini-1.5-flash-latest:generateContent?key=${com.learning.mygenai.BuildConfig.API_KEY}")
     suspend fun askQuery(@Body query: Query): QueryResponse
 
 }
