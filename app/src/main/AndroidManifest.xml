@@ -29,6 +29,7 @@
         <activity
             android:name=".ui.chatscreen.ChatActivity"
             android:exported="true"
+            android:supportsPictureInPicture="true"
             android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <data android:mimeType="text/plain"/>

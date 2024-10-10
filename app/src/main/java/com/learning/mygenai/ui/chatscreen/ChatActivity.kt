@@ -1,5 +1,6 @@
 package com.learning.mygenai.ui.chatscreen
 
+import android.app.PictureInPictureParams
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.util.Rational
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -106,6 +108,14 @@ class ChatActivity : AppCompatActivity() {
 //                delay(10000L)
 //            }
 //        }
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        enterPictureInPictureMode(
+            PictureInPictureParams.Builder()
+            .setAspectRatio(Rational(2, 3))
+            .build())
     }
 
     override fun onStart() {
