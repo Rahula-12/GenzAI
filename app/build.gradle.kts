@@ -11,6 +11,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.google.gms.google.services)
+    id("com.google.firebase.crashlytics")
 }
 val apiKey = if(project.rootProject.hasProperty("API_KEY")) project.properties["API_KEY"] else ""
 Log.d("apiKey",apiKey.toString())
@@ -150,8 +151,9 @@ dependencies {
 //    testImplementation("org.mockito:mockito-inline:5.2.1")
     androidTestImplementation("com.linkedin.dexmaker:dexmaker-mockito-inline:2.28.1")
     androidTestImplementation("com.linkedin.dexmaker:dexmaker:2.28.1")
-
-
+    implementation(platform("com.google.firebase:firebase-bom:33.5.0"))
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
 }
 
 secrets {

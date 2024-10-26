@@ -8,6 +8,7 @@ plugins {
     id("com.google.devtools.ksp") version "1.9.10-1.0.13" apply false
     id("com.google.dagger.hilt.android") version "2.50" apply false
     alias(libs.plugins.google.gms.google.services) apply false
+    id("com.google.firebase.crashlytics") version "3.0.2" apply false
 }
 
 buildscript {

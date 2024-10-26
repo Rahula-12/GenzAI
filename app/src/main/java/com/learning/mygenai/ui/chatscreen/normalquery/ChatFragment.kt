@@ -1,10 +1,8 @@
 package com.learning.mygenai.ui.chatscreen.normalquery
 
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.learning.mygenai.databinding.FragmentChatBinding
 import com.learning.mygenai.isNetworkAvailable
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ChatFragment : Fragment() {
     private val viewModel: ChatViewModel by activityViewModels<ChatViewModel>()
     private lateinit var binding:FragmentChatBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,6 +47,7 @@ class ChatFragment : Fragment() {
         }
 
         binding.askButton.setOnClickListener {
+           // throw Exception("Hi")
             if(!isNetworkAvailable(requireContext()))  Toast.makeText(requireContext(),"Please check your internet connection.",Toast.LENGTH_SHORT).show()
             else if (binding.prompt.text.toString() == "") {
                 Toast.makeText(

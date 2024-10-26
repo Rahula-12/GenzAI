@@ -24,6 +24,7 @@
         app:layout_constraintBottom_toBottomOf="@id/ai_response"/>
 
     <TextView
+        android:textIsSelectable="true"
         android:visibility="gone"
         android:textSize="15sp"
         android:backgroundTint="?attr/colorPrimary"
