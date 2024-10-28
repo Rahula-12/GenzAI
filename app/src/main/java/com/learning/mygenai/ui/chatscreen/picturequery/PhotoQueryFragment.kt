@@ -62,8 +62,8 @@ class PhotoQueryFragment : Fragment() {
                 currentImage=activityResult!!.data!!.extras!!["data"] as Bitmap
                 if(::dialogImageView.isInitialized) {
                     val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
-                    currentPhoto.rotation= 90F
                     currentPhoto.load(currentImage)
+                    currentPhoto.rotation= 90f
 //                val layoutParams=currentPhoto.layoutParams
 //                layoutParams.height=300
 //                layoutParams.width=1000
@@ -114,7 +114,7 @@ class PhotoQueryFragment : Fragment() {
             val imageUri= requireArguments().getParcelable<Uri>("imageUri")
             imageUri?.let {
                 val currentPhoto=dialogImageView.findViewById<ImageView>(R.id.currentPhoto)
-                currentPhoto.rotation= 90F
+               // currentPhoto.rotation= 90F
                 currentPhoto.load(it)
                 currentImage=uriToBitmap(it)
 //                dialogImageView.rotation= 90F

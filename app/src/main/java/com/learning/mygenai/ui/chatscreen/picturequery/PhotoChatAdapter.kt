@@ -25,8 +25,8 @@ class PhotoChatAdapter(var loading:Boolean):ListAdapter<PhotoChat,PhotoQueryView
 
     override fun onBindViewHolder(holder: PhotoQueryViewHolder, position: Int) {
         val item=getItem(position)
-       holder.photoView.load(item.photoUri.toUri()){placeholder(R.drawable.loading)}
         holder.photoView.rotation=90f
+       holder.photoView.load(item.photoUri.toUri()){placeholder(R.drawable.loading)}
         Glide.with(holder.botIcon).load(R.drawable.chatbot).transform(CircleCrop()).into(holder.botIcon)
 //        holder.photoView.rotation=90F
         holder.userQuery.text=item.userQuery
